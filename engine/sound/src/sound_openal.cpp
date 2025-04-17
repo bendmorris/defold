@@ -1012,7 +1012,11 @@ namespace dmSound
                 // feed new buffers and handle looping
                 while (instance.m_BufferCount < sound->m_BuffersPerSource) {
                     dmSoundCodec::Result r = Feed(&instance);
-                    if (r != dmSoundCodec::RESULT_OK && r != dmSoundCodec::RESULT_END_OF_STREAM) {
+                    if (r == dmSoundCodec::RESULT_OK) {
+                        // noop
+                    } else if (r == dmSoundCodec::RESULT_END_OF_STREAM) {
+                        break;
+                    } else {
                         // error
                         dmLogError("AL source feed error: %i\n", (int)r);
                         instance.m_Playing = false;
